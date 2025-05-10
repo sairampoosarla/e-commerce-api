@@ -5,8 +5,11 @@ const notFound = require('./middleware/not-found')
 const errorHandlerMiddleware = require('./middleware/error-handler')
 const morgan = require('morgan')
 
+
 //importing db file
 const connectDB = require('./db/connect')
+
+const authRouter = require('./routes/authsRoutes')
 
 const app = express()
 
@@ -16,6 +19,8 @@ app.use(express.json())
 app.get('/', (req, res) => {
     res.send('e-commerse api')
 })
+
+app.use('/api/v1/auth', authRouter)
 
 //404 not found middleware
 app.use(notFound)
