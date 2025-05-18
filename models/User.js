@@ -16,7 +16,8 @@ const UserSchema = new mongoose.Schema({
             //validator package has the function which provides if it is a valid email
             validator: validator.isEmail,
             message: "please provide valid email"
-        }
+        },
+        unique:true
     },
     password:{
         type: String,
