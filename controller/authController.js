@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const {StatusCodes} = require('http-status-codes')
+const {createJWT} = require('../utils')
 
 const register = async (req, res) => {
 
@@ -13,8 +14,12 @@ const register = async (req, res) => {
     //const tempUser = {name, email, password:hashpassword}
 
     const user = await User.create({...req.body})
+
+    const tokenUser = {userName: user.name, userId: user._id, userRole: user.role}
+
+    const token = createJWT({payload: tokenUser})
     
-    res.status(StatusCodes.OK).send({user})
+    res.status(StatusCodes.OK).send({tokenUser,token: token})
 }
 
 const login = (req, res) => {
