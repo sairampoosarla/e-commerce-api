@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const bcrypt = require('bcryptjs')
+
 
 const UserSchema = new mongoose.Schema({
     name:{
@@ -30,5 +32,21 @@ const UserSchema = new mongoose.Schema({
         default:'user'
     }
 })
+
+
+// here .pre('save') means this function will run before saving the document into the database
+UserSchema.pre('save', async function(next) {
+    const salt = await bcrypt.genSalt(10)
+    const hashPassword = await bcrypt.hash(this.password, salt)
+    this.password = hashPassword
+    console.log("password has been hashed")
+    next()
+})
+
+//here we are compairing the password that is provided and the hashed password stored in the database
+UserSchema.method.comparePassword = async function(candiatePassword) {
+    const isMatch = await bcrypt.comparePassword(candiatePassword, this.password)
+    return isMatch
+}
 
 module.exports = mongoose.model("User", UserSchema)

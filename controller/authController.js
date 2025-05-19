@@ -4,12 +4,12 @@ const {StatusCodes} = require('http-status-codes')
 
 const register = async (req, res) => {
 
-    const {name, email, password} = req.body
+    //const {name, email, password} = req.body
 
-    const salt = await bcrypt.genSalt(10)
-    const hashpassword = await bcrypt.hash(password, salt)
+    //const salt = await bcrypt.genSalt(10)
+    //const hashpassword = await bcrypt.hash(password, salt)
 
-    req.body.password = hashpassword
+    //req.body.password = hashpassword
     //const tempUser = {name, email, password:hashpassword}
 
     const user = await User.create({...req.body})
