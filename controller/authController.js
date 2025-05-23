@@ -19,7 +19,13 @@ const register = async (req, res) => {
 
     const token = createJWT({payload: tokenUser})
     
-    res.status(StatusCodes.OK).send({tokenUser,token: token})
+    //calculating the number of miliseconds in a day
+    const oneDay = 1000*60*60*24
+
+    //sedning the JWT token created via the cookie insted of send it using the json response
+    res.cookie('token', token, {httpOnly:true,expires:new Date(Date.now()+oneDay)})
+    
+    res.status(StatusCodes.OK).json({user:tokenUser})
 }
 
 const login = (req, res) => {
