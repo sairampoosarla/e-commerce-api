@@ -1,7 +1,7 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const {StatusCodes} = require('http-status-codes')
-const {createJWT} = require('../utils')
+const {attachCookiesToResponse} = require('../utils')
 
 const register = async (req, res) => {
 
@@ -17,13 +17,9 @@ const register = async (req, res) => {
 
     const tokenUser = {userName: user.name, userId: user._id, userRole: user.role}
 
-    const token = createJWT({payload: tokenUser})
-    
-    //calculating the number of miliseconds in a day
-    const oneDay = 1000*60*60*24
-
-    //sedning the JWT token created via the cookie insted of send it using the json response
-    res.cookie('token', token, {httpOnly:true,expires:new Date(Date.now()+oneDay)})
+    //here we are passing the respose object and the token user to a utils function
+    attachCookiesToResponse({res, user:tokenUser})
+    //const token = createJWT({payload: tokenUser})
     
     res.status(StatusCodes.OK).json({user:tokenUser})
 }

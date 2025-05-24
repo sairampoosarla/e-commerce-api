@@ -15,8 +15,18 @@ const isTokenValid = ({token}) => {
     jwt.verify(token, process.env.JWT_SECRET)
 }
 
+const attachCookiesToResponse = ({res, user}) => {
+    //calculating the number of miliseconds in a day
+    const oneDay = 1000*60*60*24
+
+    const token = createJWT({payload:user})
+    
+    //sedning the JWT token created via the cookie insted of send it using the json response
+    res.cookie('token', token, {httpOnly:true,expires:new Date(Date.now()+oneDay)})
+}
 
 module.exports = {
     createJWT,
-    isTokenValid
+    isTokenValid,
+    attachCookiesToResponse
 }
