@@ -19,14 +19,21 @@ app.use(morgan('tiny'))
 app.use(express.json())
 
 //adding cookie parser as middleware
-app.use(cookieParser())
+//we are passing the JWT secret as sign
+app.use(cookieParser(process.env.JWT_SECRET))
 
 app.get('/', (req, res) => {
     res.send('e-commerse api')
 })
 
+
 app.get('/api/v1', (req, res) => {
-    console.log(req.cookies)
+    
+
+    //console.log(req.cookies)
+    
+    //signed cookies are avaliable under signed cookie 
+    console.log(req.signedCookies)
     res.send("cookie is recived")
 })
 

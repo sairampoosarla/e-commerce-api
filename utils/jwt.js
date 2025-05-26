@@ -22,7 +22,8 @@ const attachCookiesToResponse = ({res, user}) => {
     const token = createJWT({payload:user})
     
     //sedning the JWT token created via the cookie insted of send it using the json response
-    res.cookie('token', token, {httpOnly:true,expires:new Date(Date.now()+oneDay)})
+    //we are making the cookie secure only if we are in production
+    res.cookie('token', token, {httpOnly:true,expires:new Date(Date.now()+oneDay), secure: process.env.NODE_ENV === "production", signed: true})
 }
 
 module.exports = {
