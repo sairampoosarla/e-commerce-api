@@ -54,6 +54,8 @@ const login = async (req, res) => {
 
 
 const logout = (req, res) => {
+    //here we are removing the cookie to a random string
+    res.cookie('token', "logout", {httpOnly:true,expires:new Date(Date.now())})
     res.send("you have sucessfull logged out")
 }
 
