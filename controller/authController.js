@@ -2,7 +2,7 @@ const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const {BadRequestError, NotFoundError, UnauthenticatedError} = require('../errors/index')
 const {StatusCodes} = require('http-status-codes')
-const {attachCookiesToResponse} = require('../utils')
+const {attachCookiesToResponse, createTokenUser} = require('../utils')
 
 const register = async (req, res) => {
 
@@ -16,7 +16,7 @@ const register = async (req, res) => {
 
     const user = await User.create({...req.body})
 
-    const tokenUser = {userName: user.name, userId: user._id, userRole: user.role}
+    const tokenUser = createTokenUser(user)
 
     //here we are passing the respose object and the token user to a utils function
     attachCookiesToResponse({res, user:tokenUser})
@@ -44,7 +44,7 @@ const login = async (req, res) => {
     if(!isPasswordCorrect){
         throw new UnauthenticatedError("Invalid Password")
     }
-    const tokenUser = {userName: user.name, userId: user._id, userRole: user.role}
+    const tokenUser = createTokenUser(user)
 
     attachCookiesToResponse({res, user:tokenUser})
     
