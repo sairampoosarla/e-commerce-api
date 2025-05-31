@@ -7,7 +7,6 @@ const morgan = require('morgan')
 //this is used of parsing the cookie that comes in the request
 const cookieParser = require('cookie-parser')
 
-
 //importing db file
 const connectDB = require('./db/connect')
 

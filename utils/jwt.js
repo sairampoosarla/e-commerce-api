@@ -12,7 +12,10 @@ const createJWT = ({payload}) => {
 
 //verifying if the token provided is valid or not
 const isTokenValid = ({token}) => {
-    jwt.verify(token, process.env.JWT_SECRET)
+    //console.log("inside the jwt function")
+    //console.log(token)
+    return jwt.verify(token, process.env.JWT_SECRET)
+    //console.log()
 }
 
 const attachCookiesToResponse = ({res, user}) => {
