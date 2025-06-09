@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const {StatusCodes} = require('http-status-codes')
 const {NotFoundError, BadRequestError} = require('../errors/index')
+const { createTokenUser, attachCookiesToResponse } = require('../utils')
 
 
 const getAllUsers = async (req, res) => {
@@ -25,9 +26,44 @@ const showCurrentUser = async (req, res) => {
     res.status(StatusCodes.OK).json({user:req.user})
 }
 
+//method one to update the user
+//in this we are using the save method which means any code added in the .pre function will be run before saving the document 
 const updateUser = async (req, res) => {
-    res.send("updateUser")
+    console.log(req.body)
+    const {email,name} = req.body
+    if(!email || !name) {
+        throw new BadRequestError("Please provide all values")
+    }
+    const user = await User.findOne(
+        {_id:req.user.id},
+    )
+    //console.log(user)
+    user.name = name
+    user.email = email
+    user.save()
+    const tokenUser = createTokenUser(user)
+    attachCookiesToResponse({res, user: tokenUser})
+    res.status(StatusCodes.OK).json({user:tokenUser});
+
 }
+
+// const updateUser = async (req, res) => {
+//     console.log(req.body)
+//     const {email,name} = req.body
+//     if(!email || !name) {
+//         throw new BadRequestError("Please provide all values")
+//     }
+//     const user = await User.findOneAndUpdate(
+//         {_id:req.user.id},
+//         {email, name},
+//         {new: true, runValidators: true}
+//     )
+//     console.log(user)
+//     const tokenUser = createTokenUser(user)
+//     attachCookiesToResponse({res, user: tokenUser})
+//     res.status(StatusCodes.OK).json({user:tokenUser});
+
+// }
 
 const updateUserPassword = async (req, res) => {
 

@@ -36,6 +36,7 @@ const UserSchema = new mongoose.Schema({
 
 // here .pre('save') means this function will run before saving the document into the database
 UserSchema.pre('save', async function(next) {
+    if (!this.isModified('password')) return
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(this.password, salt)
     this.password = hashPassword

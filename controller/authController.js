@@ -13,14 +13,15 @@ const register = async (req, res) => {
 
     //req.body.password = hashpassword
     //const tempUser = {name, email, password:hashpassword}
-
+    console.log("entered the register function")
     const user = await User.create({...req.body})
-
+    console.log("created the user")
     const tokenUser = createTokenUser(user)
-
+    console.log("created the token for the user")
     //here we are passing the respose object and the token user to a utils function
     attachCookiesToResponse({res, user:tokenUser})
     //const token = createJWT({payload: tokenUser})
+    console.log("attached token to the response")
     
     res.status(StatusCodes.OK).json({user:tokenUser})
 }
