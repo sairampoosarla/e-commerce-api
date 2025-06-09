@@ -167,8 +167,15 @@
 - [x] create token user, attachCookiesToResponse and send back the tokenUser
 
 #### updateUser with user.save()
+- [x] write updateUser function where using the user.save() method
+- [x] add the contion is user.pre function to olny has the password where is change in password only
 
 #### Setup and Apply checkPermissions()
+- [x] create a new file in utils called checkPermissions
+- [x] create a new function in it called as checkPermissions
+- [x] function accepts two variables one middleware user variable and user variable retuned by mangose
+- [x] in this function check if the user is admin, if yes then return
+- [x] in this function check if it is the same user from the middleware variable and mangoose variable, if yes return
 
 #### Product Model
 

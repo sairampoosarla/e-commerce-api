@@ -1,7 +1,7 @@
 const User = require('../models/User')
 const {StatusCodes} = require('http-status-codes')
 const {NotFoundError, BadRequestError} = require('../errors/index')
-const { createTokenUser, attachCookiesToResponse } = require('../utils')
+const { createTokenUser, attachCookiesToResponse, checkPermissions } = require('../utils')
 
 
 const getAllUsers = async (req, res) => {
@@ -19,6 +19,7 @@ const getSingleUser = async (req, res) => {
     if(!user){
         throw new NotFoundError("user is not found")
     }
+    await checkPermissions(req.user, user)
     res.status(StatusCodes.OK).json({user})
 }
 
