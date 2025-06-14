@@ -12,6 +12,7 @@ const connectDB = require('./db/connect')
 
 const authRouter = require('./routes/authsRoutes')
 const userRouter = require('./routes/userRoutes')
+const productRouter = require('./routes/productRoutes')
 
 const app = express()
 
@@ -39,6 +40,7 @@ app.get('/api/v1', (req, res) => {
 
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/users', userRouter)
+app.use('/api/v1/products', productRouter)
 
 //404 not found middleware
 app.use(notFound)
