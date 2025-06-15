@@ -1,21 +1,62 @@
+const Product = require("../models/Product")
+const {StatusCodes} = require('http-status-codes')
+const {NotFoundError} = require('../errors/index')
+
+
 const createProduct = async (req, res) => {
-    res.send("Product has been created")
+    //console.log(req.body)
+    //console.log(req.user)
+    req.body.user = req.user.id
+
+
+    const product = await Product.create({...req.body})
+    res.status(StatusCodes.OK).json({product:product})
+    //res.send("These are all the Products")
 }
 
 const getAllProducts = async (req, res) => {
-    res.send("These are all the Products")
+
+    const products = await Product.find({},'name')
+    res.status(StatusCodes.OK).json({products:products})
 }
 
 const getSingleProduct = async (req, res) => {
-    res.send("This is a single Product")
+    const id = req.params.id
+    const product = await Product.findById(id,'name')
+    if(!product){
+        throw new NotFoundError("product is not found")
+    }
+
+    res.status(StatusCodes.OK).json({product})
+    //res.send("This is a single Product")
 }
 
 const updateProduct = async (req, res) => {
-    res.send("Product has been updated")
+    const product = await Product.findOneAndUpdate({_id:req.params.id}, req.body,{new:true,runValidators:true})
+
+    if(!product){
+        throw new NotFoundError('product is not found')
+    }
+    res.status(StatusCodes.OK).json({product})
 }
 
 const deleteProduct = async (req, res) => {
-    res.send("Product has been deleted")
+    //console.log(req.params)
+
+    const product = await Product.findOne({_id:req.parms.id})
+
+    if(!product){
+        throw new NotFoundError("product is not found")
+    }
+
+    await product.remove()
+    res.status(StatusCodes.OK).json({msg:"Product has been removed"})
+
+
+
+    //alternative way to delete the product
+    //const itemsDeleted = await Product.findOneAndDelete({_id:req.params.id})
+    r//es.status(StatusCodes.OK).json({deletedItem:itemsDeleted})
 }
 
 const uploadImage = async (req, res) => {

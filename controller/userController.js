@@ -19,6 +19,7 @@ const getSingleUser = async (req, res) => {
     if(!user){
         throw new NotFoundError("user is not found")
     }
+    //checking here if the user requesting is an admin/user it self
     await checkPermissions(req.user, user)
     res.status(StatusCodes.OK).json({user})
 }
