@@ -1,6 +1,8 @@
 const Product = require("../models/Product")
 const {StatusCodes} = require('http-status-codes')
 const {NotFoundError} = require('../errors/index')
+const cloudinary = require('cloudinary').v2
+
 
 
 const createProduct = async (req, res) => {
@@ -60,7 +62,14 @@ const deleteProduct = async (req, res) => {
 }
 
 const uploadImage = async (req, res) => {
-    res.send("Image has been uploaded")
+    console.log(req.files.image)
+    const result = await cloudinary.uploader.upload(req.files.image.tempFilePath,{
+            use_filename: true,
+            folder:'file-upload',
+        })
+    console.log("after uploading the file")
+    return res.status(StatusCodes.OK).json({image:{src:result.secure_url}})
+    //res.send("Image has been uploaded")
 }
 
 module.exports = {

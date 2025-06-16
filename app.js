@@ -10,18 +10,32 @@ const cookieParser = require('cookie-parser')
 //importing db file
 const connectDB = require('./db/connect')
 
+//this is the library which gives us the ability for file uploads
+const fileUpload = require('express-fileupload')
+
 const authRouter = require('./routes/authsRoutes')
 const userRouter = require('./routes/userRoutes')
 const productRouter = require('./routes/productRoutes')
 
-const app = express()
+//cloudinary
+const cloudinary = require('cloudinary').v2
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+})
 
+const app = express()
+app.use(fileUpload({useTempFiles: true}))
 app.use(morgan('tiny'))
 app.use(express.json())
+
+app.use(express.static('./public'))
 
 //adding cookie parser as middleware
 //we are passing the JWT secret as sign
 app.use(cookieParser(process.env.JWT_SECRET))
+
 
 app.get('/', (req, res) => {
     res.send('e-commerse api')
