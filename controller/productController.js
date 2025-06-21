@@ -16,6 +16,7 @@ const createProduct = async (req, res) => {
     //res.send("These are all the Products")
 }
 
+
 const getAllProducts = async (req, res) => {
 
     const products = await Product.find({},'name')
