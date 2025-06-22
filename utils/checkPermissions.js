@@ -1,5 +1,6 @@
 const {BadRequestError} = require('../errors/index')
 
+
 const checkPermissions = async (reqUser, dbUser) => {
     //console.log(reqUser)
     //console.log(dbUser)
