@@ -31,8 +31,15 @@ const createReview = async (req, res) => {
 }
 
 const getAllReviews = async (req, res) => {
-    const review = await Review.find({},'title')
-    res.status(StatusCodes.OK).json({review:review})
+    // here the populate method will help in getting the information from the records from related tables 
+    const reviews = await Review.find({}).populate({
+        path:'product',
+        select:'name company price'
+    }).populate({
+        path:'user',
+        select:'name'
+    })
+    res.status(StatusCodes.OK).json({review:reviews})
     //res.send("These are all the reviews")
 }
 

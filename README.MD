@@ -293,6 +293,7 @@
 - [x] send back 200
 
 #### Populate
+- [x] use the populate method in getallReviews controller and send the information related to product and user back in response
 
 #### Virtuals
 
