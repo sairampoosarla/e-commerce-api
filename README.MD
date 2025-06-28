@@ -257,6 +257,7 @@
 - [x] rest only to users (setup middleware)
 - [x] typical REST setup
 - [x] import reviewRoutes as reviewRouter in the app.js
+- [x] apply index for user and product so that a unique ID is created and a user can only add one review to a product
 - [x] setup app.use('/api/v1/reviews', reviewRouter)
 
 #### Create Review

@@ -1,4 +1,5 @@
 const Review = require("../models/Review")
+const Product = require("../models/Product")
 const {StatusCodes} = require('http-status-codes')
 const {NotFoundError, BadRequestError} = require("../errors/index")
 
@@ -6,8 +7,26 @@ const createReview = async (req, res) => {
     req.body.user = req.user.id
     //console.log(req.body)
 
+    const productID = req.body.product
+    //checking if there is a product with the requested ID
+    const isValidProduct = await Product.findOne({_id: productID})
+
+    if (!isValidProduct){
+        throw new NotFoundError(`There is not product with requested id:${productID}`)
+    }
+
+    //checking if there is a review already submitted by the user for the product
+    const alreadySubmitted = await Review.findOne({
+        user:req.user.id,
+        product:productID
+    })
+
+    if(alreadySubmitted){
+        throw new BadRequestError("There is a review already submitted by the user")
+    }
+
     const review = await Review.create({...req.body})
- 7
+ 
     res.status(StatusCodes.OK).json({review:review})
 }
 
