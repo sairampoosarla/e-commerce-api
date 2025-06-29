@@ -64,7 +64,26 @@ const productSchema = new mongoose.Schema({
     }
 },
 {
-    timestamps:true
+    timestamps:true,
+    //here we are setting up the parameters for virtuals
+    toJSON: {virtuals: true},
+    toObject: {virtuals: true}
+})
+
+//here we are setting up the virtual connection
+productSchema.virtual('reviews',{
+    ref:'Review',
+    //this is feild that we are using from the product model
+    localField:'_id',
+    //this is the feild that is linked in the review model 
+    foreignField:'product',
+    justOne:false
+})
+
+//this is a prefunction which is triggered before delete function is run
+//here we are first deleting all the reviews that are related to the prduct before deleting the product itself
+productSchema.pre('remove', async function (next){
+    await this.model('Review').deleteMany({product:this._id})
 })
 
 module.exports = mongoose.model("Product", productSchema)

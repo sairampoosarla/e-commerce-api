@@ -45,6 +45,7 @@ const getAllReviews = async (req, res) => {
 
 const getSingleReview = async (req, res) => {
     console.log(req.params)
+    
     const review = await Review.findById(req.params.id)
 
     if(!review){

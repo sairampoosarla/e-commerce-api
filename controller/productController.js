@@ -25,7 +25,8 @@ const getAllProducts = async (req, res) => {
 
 const getSingleProduct = async (req, res) => {
     const id = req.params.id
-    const product = await Product.findById(id,'name')
+    //here review is a virtual connection
+    const product = await Product.findById(id,'name').populate('review')
     if(!product){
         throw new NotFoundError("product is not found")
     }
@@ -59,7 +60,7 @@ const deleteProduct = async (req, res) => {
 
     //alternative way to delete the product
     //const itemsDeleted = await Product.findOneAndDelete({_id:req.params.id})
-    r//es.status(StatusCodes.OK).json({deletedItem:itemsDeleted})
+    //res.status(StatusCodes.OK).json({deletedItem:itemsDeleted})
 }
 
 const uploadImage = async (req, res) => {
